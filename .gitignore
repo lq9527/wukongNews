@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+__pycache__/
+*.pyc
+# 项目本地数据
+.workbuddy/
