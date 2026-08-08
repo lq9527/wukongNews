@@ -1,5 +1,5 @@
 name: 每日热点新闻
-run-name: ${{ github.actor }} 正在生成每日热点新闻 🚀
+run-name: ${{ github.actor }} 正在生成 helloworld 🚀
 
 on:
   schedule:
@@ -7,29 +7,30 @@ on:
   workflow_dispatch: {}        # 允许在 Actions 页面手动触发
 
 permissions:
-  contents: write             # 允许 GITHUB_TOKEN 提交文件
+  contents: write
 
 jobs:
-  fetch-news:
+  hello:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+      - name: Write helloworld to markdown
+        run: |
+          mkdir -p news
+          cat > news/$(date +'%Y-%m-%d').md <<EOF
+          # 📰 Hello World
 
-      - name: Fetch news and generate markdown
-        run: python scripts/fetch_news.py
+          *生成时间：$(date +'%Y-%m-%d %H:%M:%S')*
+
+          这是 GitHub Actions 自动生成的文件。
+          EOF
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "📰 每日热点 $(date +'%Y-%m-%d')" || echo "No changes to commit"
+          git commit -m "📰 helloworld $(date +'%Y-%m-%d')" || echo "No changes to commit"
           git push
